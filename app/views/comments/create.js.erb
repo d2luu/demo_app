@@ -1,2 +1,8 @@
-$(".comments").html("<%= j render "shared/comment_on_prod", product: @product %>")
-$("#comment_field_<%= @product.id %>").val("")
+<% if @result && @valid %>
+$('#comments_<%= @entry.id %>').append("<%=j render 'comments/comment',entry: @entry, comment: @comment %>");
+$('#comment_content_<%= @entry.id %>').val('')
+<% elsif @result && !@valid %>	
+alert("The comment is too long (maximum is 140 characters)");
+<% else %>
+alert("You Unfollow <%= @entry.user.name %>, please follow to continue comment");
+<% end %> 

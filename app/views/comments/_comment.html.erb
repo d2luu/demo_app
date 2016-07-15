@@ -8,7 +8,7 @@
   <div class="col-md-9">
     <div class="col-md-11">
       <b><%= link_to comment.user.name, comment.user %></b>
-      <%= comment.body %>
+      <%= comment.content %>
       <br/>
       <h6><%= time_ago_in_words(comment.created_at) %>. </h6>
     </div>

@@ -1,1 +1,1 @@
-$(".comments").html("<%= j render "shared/comment_on_prod", product: @product %>")
+$('#comments_<%= @entry.id %>').html("<%= j render @entry.comments, entry: @entry, comment: @comment %>");

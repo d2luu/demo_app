@@ -1,0 +1,14 @@
+<%= form_for(@comment ||= Comment.new, html: { class: "comment_form" }, remote: true) do |f| %>
+  <div class="row">
+    <div class="col-md-1">
+      <%= gravatar_for current_user, size: 30 %>
+    </div>
+    <div class="col-md-7">
+      <%= f.hidden_field :entry_id, value: entry.id %>
+      <%= f.text_area :content, rows: 1, placeholder: 'Add a comment...', class: 'form-control form-margin', id: "comment_body_#{entry.id}" %> 
+    </div>
+    <div class="col-md-2">
+        <%= f.submit "comment", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

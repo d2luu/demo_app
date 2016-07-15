@@ -1,6 +1,6 @@
 class EntriesController < ApplicationController
   before_action :set_entry, only: [:show, :edit, :update, :destroy]
-
+  before_action :correct_user,   only: :destroy
   # GET /entries
   # GET /entries.json
   def index
@@ -24,16 +24,13 @@ class EntriesController < ApplicationController
   # POST /entries
   # POST /entries.json
   def create
-    @entry = Entry.new(entry_params)
-
-    respond_to do |format|
-      if @entry.save
-        format.html { redirect_to @entry, notice: 'Entry was successfully created.' }
-        format.json { render :show, status: :created, location: @entry }
-      else
-        format.html { render :new }
-        format.json { render json: @entry.errors, status: :unprocessable_entity }
-      end
+    @entry = current_user.entries.build(entry_params)
+    if @entry.save
+      flash[:success] = "Entry created!"
+      redirect_to root_url
+    else
+      @feed_items = []
+      render 'static_pages/home'
     end
   end
 
@@ -55,11 +52,10 @@ class EntriesController < ApplicationController
   # DELETE /entries/1.json
   def destroy
     @entry.destroy
-    respond_to do |format|
-      format.html { redirect_to entries_url, notice: 'Entry was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    flash[:success] = "Entry deleted"
+    redirect_to request.referrer || root_url
   end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -70,5 +66,10 @@ class EntriesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def entry_params
       params.require(:entry).permit(:title, :body, :user_id)
+    end
+
+    def correct_user
+      @entry = current_user.entries.find_by(id: params[:id])
+      redirect_to root_url if @entry.nil?
     end
 end

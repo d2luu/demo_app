@@ -1,2 +1,8 @@
-$("#follow_form").html("<%= escape_javascript(render('users/follow')) %>");
-$("#followers").html('<%= @user.followers.count %>');	
+<% if @followedornot %>
+  $("#follow_form").html("<%= escape_javascript(render('users/follow')) %>");
+  $("#followers").html('<%= @user.followers.count %>');
+  $(".comment_form").remove();
+  location.reload();
+<% else %>
+  location.reload();
+<% end %>
